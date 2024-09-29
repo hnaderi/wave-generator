@@ -107,10 +107,10 @@ const void Screen::render(const State state) {
     break;
   }
 
-
   display->setCursor(0, 8);
   display->setTextSize(2);
   display->write(freqFormat(state.freq));
+  display->setTextSize(1);
   if (state.freq < 1e3) {
     display->setCursor(108, 24);
     display->write("Hz");
