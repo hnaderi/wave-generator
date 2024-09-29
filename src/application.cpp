@@ -19,26 +19,26 @@ void Application::onFreqChange(long delta) {
 
   state.freq = min(max(state.freq, 0), 12500000);
 
-  requiresRendering = true;
+  updated = true;
 }
 
 void Application::onModChange(Mod mod) {
   state.mod = mod;
-  requiresRendering = true;
+  updated = true;
 }
 
 void Application::onSelectionChange(long value) {
   const int delta = value > 0 ? +1 : -1;
   const int a = (state.selection + 3 + delta) % 3;
   state.selection = static_cast<Selection>(a);
-  requiresRendering = true;
+  updated = true;
 }
 
 void Application::onWaveChange(long value) {
   const int delta = value > 0 ? +1 : -1;
   const int a = (state.wave + 3 + delta) % 3;
   state.wave = static_cast<Wave>(a);
-  requiresRendering = true;
+  updated = true;
 }
 
 void Application::onClick(Click type) {
@@ -81,8 +81,11 @@ void Application::handle(InputEvent event) {
   onClick(event.click);
   onRotation(event.rotation);
 
-  if (requiresRendering) {
+  if (updated || state.mod > Mod::On)
     screen->render(state);
-    requiresRendering = false;
+
+  if (updated) {
+    // TODO driver
+    updated = false;
   }
 }

@@ -12,7 +12,7 @@ class Application {
   Screen *screen;
   AD9833 driver;
   State state;
-  boolean requiresRendering = true;
+  boolean updated = true;
 
   void onFreqChange(long delta);
   void onModChange(Mod mod);

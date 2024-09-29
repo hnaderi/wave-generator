@@ -7,13 +7,13 @@
 using data::State;
 
 class Screen {
+  Screen(Adafruit_SSD1306 *display) : display(display) {}
+  Adafruit_SSD1306 *display;
+  unsigned long blinked;
+
 public:
   static Screen *build();
   const void render(const State state);
-
-private:
-  Screen(Adafruit_SSD1306 *display) : display(display) {}
-  Adafruit_SSD1306 *display;
 };
 
 #endif // SCREEN_H_
