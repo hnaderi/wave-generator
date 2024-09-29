@@ -10,9 +10,14 @@ void Application::onFreqChange(long delta) {
     state.freq += delta * 10;
     break;
   case Selection::Range:
-    state.freq *= 10;
+    if (delta > 0)
+      state.freq *= 10;
+    else
+      state.freq /= 10;
     break;
   }
+
+  state.freq = min(max(state.freq, 0), 12500000);
 
   requiresRendering = true;
 }

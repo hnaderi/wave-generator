@@ -53,10 +53,10 @@ const void Screen::render(const State state) {
     display->write("1x");
     break;
   case Selection::Fast:
-    display->write("2x");
+    display->write("10x");
     break;
   case Selection::Range:
-    display->write("10x");
+    display->write("*10");
     break;
   }
 
