@@ -10,7 +10,7 @@ using namespace data;
 
 class Application {
   Screen *screen;
-  AD9833 driver;
+  AD9833 *driver;
   State state;
   boolean updated = true;
 
@@ -22,8 +22,13 @@ class Application {
   void onClick(Click type);
   void onRotation(long value);
 
+  void onUpdated();
+
+  Application(Screen *screen, AD9833 *driver)
+      : screen(screen), driver(driver) {}
+
 public:
-  Application(Screen *screen) : screen(screen), driver(AD9833(10)) {}
+  static Application *build();
   void handle(InputEvent event);
 };
 

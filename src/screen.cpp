@@ -22,7 +22,7 @@ Screen *Screen::build() {
 }
 
 const char *freqFormat(long freq) {
-  static char freqStr[11] = "----------";
+  static char freqStr[11];
   sprintf(freqStr, "%10ld", freq);
   return freqStr;
 }

@@ -1,5 +1,15 @@
 #include "application.hpp"
+#include "AD9833.h"
 #include "data.hpp"
+#include "screen.hpp"
+
+Application *Application::build() {
+  auto driver = new AD9833(10);
+  driver->begin();
+  auto screen = Screen::build();
+  const auto app = new Application(screen, driver);
+  return app;
+}
 
 void Application::onFreqChange(long delta) {
   switch (state.selection) {
@@ -77,6 +87,27 @@ void Application::onRotation(long value) {
   }
 }
 
+void Application::onUpdated() {
+  if (state.mod == Mod::Off)
+    driver->setWave(AD9833_OFF);
+  else {
+    driver->setFrequency(state.freq);
+    switch (state.wave) {
+    case Wave::Sine:
+      driver->setWave(AD9833_SINE);
+      break;
+    case Wave::Rect:
+      driver->setWave(AD9833_SQUARE1);
+      break;
+    case Wave::Tri:
+      driver->setWave(AD9833_TRIANGLE);
+      break;
+    }
+  }
+
+  updated = false;
+}
+
 void Application::handle(InputEvent event) {
   onClick(event.click);
   onRotation(event.rotation);
@@ -84,8 +115,6 @@ void Application::handle(InputEvent event) {
   if (updated || state.mod > Mod::On)
     screen->render(state);
 
-  if (updated) {
-    // TODO driver
-    updated = false;
-  }
+  if (updated)
+    onUpdated();
 }
