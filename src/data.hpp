@@ -3,7 +3,7 @@
 
 namespace data {
 enum Wave { Sine, Rect, Tri };
-enum Selection { Normal, Fast, Range };
+enum Selection { Normal, Fast, Precise };
 enum Mod { Off, On, SettingSelection, SettingWave };
 
 struct State {
@@ -18,9 +18,6 @@ struct InputEvent {
   Click click;
   long rotation;
 };
-
-typedef void (*OnClickCallback)(data::Click);
-typedef void (*OnRotateCallback)(long);
 
 typedef void (*InputEventHandler)(InputEvent);
 

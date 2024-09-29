@@ -23,7 +23,20 @@ Screen *Screen::build() {
 
 const char *freqFormat(long freq) {
   static char freqStr[11];
-  sprintf(freqStr, "%10ld", freq);
+  const byte points = freq >= 1e6 ? 2 : freq >= 1e3 ? 1 : 0;
+  for (int i = 9; i >= 0; i--) {
+    if (freq > 0) {
+      if (points == 2 && i == 9 - 3)
+        freqStr[i--] = ',';
+      else if ((points == 1 && i == 9 - 3) || (points == 2 && i == 9 - 6 - 1))
+        freqStr[i--] = '.';
+      byte digit = freq % 10;
+      freq /= 10;
+      freqStr[i] = '0' + digit;
+    } else {
+      freqStr[i] = ' ';
+    }
+  }
   return freqStr;
 }
 
@@ -39,6 +52,7 @@ const void Screen::render(const State state) {
 
   display->setTextColor(SSD1306_WHITE);
   display->cp437(true);
+  display->setTextSize(1);
 
   const unsigned char *icon;
 
@@ -67,19 +81,15 @@ const void Screen::render(const State state) {
   display->setCursor(108, 0);
   switch (state.selection) {
   case Selection::Normal:
-    display->write("1x");
+    display->write("1%");
     break;
   case Selection::Fast:
-    display->write("10x");
+    display->write("10%");
     break;
-  case Selection::Range:
-    display->write("*10");
+  case Selection::Precise:
+    display->write(".1");
     break;
   }
-
-  display->setCursor(0, 8);
-  display->setTextSize(2);
-  display->write(freqFormat(state.freq));
 
   display->setCursor(0, 24);
   display->setTextSize(1);
@@ -97,8 +107,20 @@ const void Screen::render(const State state) {
     break;
   }
 
-  display->setCursor(108, 24);
-  display->write("Hz");
+
+  display->setCursor(0, 8);
+  display->setTextSize(2);
+  display->write(freqFormat(state.freq));
+  if (state.freq < 1e3) {
+    display->setCursor(108, 24);
+    display->write("Hz");
+  } else {
+    display->setCursor(107, 24);
+    if (state.freq < 1e6)
+      display->write("KHz");
+    else
+      display->write("MHz");
+  }
 
   display->display();
 }

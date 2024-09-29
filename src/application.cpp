@@ -12,22 +12,22 @@ Application *Application::build() {
 }
 
 void Application::onFreqChange(long delta) {
+  long percent = double(delta) * double(state.freq) / 100.0f;
+  if (percent == 0)
+    percent = delta > 0 ? 1 : -1;
   switch (state.selection) {
   case Selection::Normal:
-    state.freq += delta;
+    state.freq += percent;
     break;
   case Selection::Fast:
-    state.freq += delta * 10;
+    state.freq += 10 * percent;
     break;
-  case Selection::Range:
-    if (delta > 0)
-      state.freq *= 10;
-    else
-      state.freq /= 10;
+  case Selection::Precise:
+    state.freq += delta;
     break;
   }
 
-  state.freq = min(max(state.freq, 0), 12500000);
+  state.freq = min(max(state.freq, 1), 12500000);
 
   updated = true;
 }
