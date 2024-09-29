@@ -16,7 +16,11 @@ class Application {
 
   void onFreqChange(long delta);
   void onModChange(Mod mod);
+  void onSelectionChange(long value);
+  void onWaveChange(long value);
+
   void onClick(Click type);
+  void onRotation(long value);
 
 public:
   Application(Screen *screen) : screen(screen), driver(AD9833(10)) {}

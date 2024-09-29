@@ -32,6 +32,7 @@ const void Screen::render(const State state) {
 
   display->setTextColor(SSD1306_WHITE);
   display->cp437(true);
+  display->setCursor(0, 0);
 
   const unsigned char *icon;
   switch (state.wave) {
@@ -47,7 +48,17 @@ const void Screen::render(const State state) {
   }
   display->drawBitmap(64 - 8, 0, icon, 16, 8, SSD1306_WHITE);
   display->setCursor(108, 0);
-  display->write("1x");
+  switch (state.selection) {
+  case Selection::Normal:
+    display->write("1x");
+    break;
+  case Selection::Fast:
+    display->write("2x");
+    break;
+  case Selection::Range:
+    display->write("10x");
+    break;
+  }
 
   display->setCursor(0, 8);
   display->setTextSize(2);
@@ -62,7 +73,8 @@ const void Screen::render(const State state) {
   case Mod::Off:
     display->write("=OFF=");
     break;
-  case Mod::Setting:
+  case Mod::SettingWave:
+  case Mod::SettingSelection:
     display->write("=SET=");
     break;
   }

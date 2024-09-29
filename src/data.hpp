@@ -2,9 +2,9 @@
 #define DATA_H_
 
 namespace data {
-enum class Wave { Sine, Rect, Tri };
-enum class Selection { Normal, Fast, Range };
-enum class Mod { Off, On, Setting };
+enum Wave { Sine, Rect, Tri };
+enum Selection { Normal, Fast, Range };
+enum Mod { Off, On, SettingSelection, SettingWave };
 
 struct State {
   long freq = 1000;
@@ -13,7 +13,7 @@ struct State {
   Mod mod = Mod::Off;
 };
 
-enum class Click { None, Short, Long };
+enum Click { None, Short, Long };
 struct InputEvent {
   Click click;
   long rotation;
