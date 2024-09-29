@@ -12,6 +12,18 @@ struct State {
   Selection selection = Selection::Normal;
   Mod mod = Mod::Off;
 };
+
+enum class Click { None, Short, Long };
+struct InputEvent {
+  Click click;
+  long rotation;
+};
+
+typedef void (*OnClickCallback)(data::Click);
+typedef void (*OnRotateCallback)(long);
+
+typedef void (*InputEventHandler)(InputEvent);
+
 } // namespace data
 
 #endif // DATA_H_
