@@ -4,7 +4,7 @@
 #include "screen.hpp"
 
 Application *Application::build() {
-  auto driver = new AD9833(10);
+  auto driver = new AD9833(SS, MISO, SCK);
   driver->begin();
   auto screen = Screen::build();
   const auto app = new Application(screen, driver);
