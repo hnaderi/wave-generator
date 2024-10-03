@@ -41,7 +41,7 @@ public:
   };
 
   Input(Application *app, Pins pins)
-      : button(new Button(pins.sw)), knob(Knob::build(pins.clk, pins.dt)),
+      : button(new Button(pins.sw)), knob(Knob::build(pins.dt, pins.clk)),
         app(app) {}
 
   void tick() {

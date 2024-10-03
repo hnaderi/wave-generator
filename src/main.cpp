@@ -7,7 +7,7 @@ Input *input;
 
 void setup() {
   app = Application::build();
-  input = new Input(app, {.clk = 0, .dt = 1, .sw = A1});
+  input = new Input(app, {.clk = 2, .dt = 3, .sw = 6});
 }
 
 void loop() { input->tick(); }
